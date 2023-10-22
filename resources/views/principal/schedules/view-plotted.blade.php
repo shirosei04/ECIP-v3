@@ -3,7 +3,7 @@
 
 @section('content')
 {{-- <div class="container-fluid"> --}}
-        <div class="card">
+        <div class="card vh-100">
             <div class="card-header tableCardHeader">
                 <h3><i class="fas fa-calendar-alt"></i> View Plotted Schedules</h3>
             </div>
@@ -14,7 +14,7 @@
                             <select class="form-select" aria-label="Default select example" name="sy_filter">
                                 <option value="" selected>Choose School Year</option>
                                 @foreach($allsy as $sy)
-                                <option value="{{$sy->school_year}}">{{$sy->school_year}}</option>
+                                <option value="{{$sy->school_year}}" {{ ($syfilter==$sy->school_year)? "selected" : "" }}>{{$sy->school_year}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -23,7 +23,7 @@
                             <select class="form-select" aria-label="Default select example" name="section_filter">
                                 <option value=""  selected>Filter Section</option>
                                 @foreach($sections as $section)
-                                <option value="{{$section->section_name}}">{{$section->section_name}}</option>
+                                <option value="{{$section->section_name}}" {{ ($sectionfilter==$section->section_name)? "selected" : "" }}>{{$section->section_name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -31,21 +31,21 @@
                         <div class="col-2">
                             <select class="form-select" name="track_filter">
                                 <option value="" selected>Filter by Track</option>
-                                <option value="ABM">ABM</option>
-                                <option value="GAS">GAS</option>
-                                <option value="HUMSS">HUMSS</option>
-                                <option value="STEM">STEM</option>
-                                <option value="TVL">TVL</option>
-                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="ABM" {{ ($trackfilter=="ABM")? "selected" : "" }}>ABM</option>
+                                <option value="GAS" {{ ($trackfilter=="GAS")? "selected" : "" }}>GAS</option>
+                                <option value="HUMSS" {{ ($trackfilter=="HUMSS")? "selected" : "" }}>HUMSS</option>
+                                <option value="STEM" {{ ($trackfilter=="STEM")? "selected" : "" }}>STEM</option>
+                                <option value="TVL" {{ ($trackfilter=="TVL")? "selected" : "" }}>TVL</option>
+                                <option value="Not Applicable"{{ ($trackfilter=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                             </select>
                         </div>
                         
                         <div class="col-2">
                             <select class="form-select" name="semester_filter">
                                 <option value="" selected>Filter by Semester</option>
-                                <option value="1st">1st</option>
-                                <option value="2nd">2nd</option>
-                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="1st" {{ ($semesterfilter=="1st")? "selected" : "" }}>1st</option>
+                                <option value="2nd" {{ ($semesterfilter=="2nd")? "selected" : "" }}>2nd</option>
+                                <option value="Not Applicable"{{ ($semesterfilter=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                             </select>
                         </div>
 
@@ -86,16 +86,19 @@
                     </thead>
                     <tbody>
                         @if (count($scheds) == 0)
+                            @if(empty($trackfilter))
                             <tr>
                                 <div class="alert alert-danger">Please select a filter  </div>
                             </tr>
+                            @else
+                            <tr>
+                                <div class="alert alert-danger">No schedules found </div>
+                            </tr>
+                            @endif
+
                         @else
                         <form action="{{url('schedule-report')}}" method="POST">
                             @csrf
-                           
-                            @if($syfilter != "")
-                            <div class="alert alert-success" role="al ert">Filter result(s) for "<strong style="color: red">{{"S.Y:  " . $syfilter . ", Section: " . $sectionfilter . ", Track: " . $trackfilter . ", Semester: " . $semesterfilter }}"</strong></div>
-                            @endif
 
                             <button type="submit" class="btn btn-outline-danger float-end mt-3 mb-3"><i class="fas fa-file-export"></i> Generate Report</button>
 

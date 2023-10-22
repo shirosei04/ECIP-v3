@@ -16,13 +16,13 @@
                             @csrf
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">Subject Name</label>
                                     <input type="float" class="form-control" value="{{$subject->subject_name}}" name="subject_name" required>
                                     
                                 </div>
 
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">Curriculum</label>
                                     <select class="form-select" name="curriculumId" required>
                                         <option value="" selected>Choose Curriculum</option>
@@ -31,10 +31,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">For Grade Level</label>
                                     <select class="form-select" name="subject_grade_lvl" required> 
                                         <option value="" selected>Choose Grade Level</option>
@@ -54,7 +52,7 @@
                                     </select>
                                 </div>
                                
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-3 mb-3">
                                     <label class="form-label">Track</label>
                                     <select class="form-select" name="track" required>
                                         <option value="" selected>Choose Track</option>
@@ -62,7 +60,7 @@
                                         <option value="GAS" {{ ($subject->track=="GAS")? "selected" : "" }}>GAS</option>
                                         <option value="STEM" {{ ($subject->track=="STEM")? "selected" : "" }}>STEM</option>
                                         <option value="HUMSS" {{ ($subject->track=="HUMSS")? "selected" : "" }}>HUMSS</option>
-                                        <option value="TECH-VOC" {{ ($subject->track=="TECH-VOC")? "selected" : "" }}>TECH-VOC</option>
+                                        <option value="TVL" {{ ($subject->track=="TVL")? "selected" : "" }}>TVL</option>
                                         <option value="General Subject(SHS)" {{ ($subject->track=="General Subject(SHS)")? "selected" : "" }}>General Subject(SHS)</option>
                                         <option value="Not Applicable" {{ ($subject->track=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                                     </select>

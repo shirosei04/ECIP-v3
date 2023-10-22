@@ -805,7 +805,7 @@ class PrincipalController extends Controller
     //subjects
     public function subjectsIndex(){
         $subjects = Subject::join('curriculums', 'curriculums.curriculum_id', '=', 'subjects.curriculumId')
-                            ->orderBy('curriculum')->orderBy('subject_grade_lvl')->orderBy('subject_name')->paginate(12);
+                            ->orderBy('curriculum')->orderBy('subject_grade_lvl')->orderBy('subject_name')->paginate(15);
         $curriculums = Curriculum::orderBy('curriculum', 'asc')->get();
         $gradefilter = "";
         $curriculumfilter = "";
@@ -859,9 +859,11 @@ class PrincipalController extends Controller
             if(count($subjects) == 0){
                 return redirect('/subjects')->with('alert', 'No results found for "'.$search_text.'" ');
             }else{
+                $curriculumfilter = "";
+                $trackfilter = "";
                 $curriculums = Curriculum::orderBy('curriculum', 'asc')->get();
                 $gradefilter = "";
-                return view('principal.schedules.subjects', compact('subjects', 'search_text', 'curriculums', 'gradefilter'));
+                return view('principal.schedules.subjects', compact('subjects', 'search_text', 'curriculums', 'gradefilter', 'trackfilter', 'curriculumfilter'));
             }
         }
     }
@@ -878,7 +880,7 @@ class PrincipalController extends Controller
                             ->orderBy('subject_name')
                             ->when($request->grade_filter != null | $request->track_filter != null | $request->curriculum_filter != null , function ($q) use ($request) {
                             return $q->where('subject_grade_lvl', $request->grade_filter)->where('track', $request->track_filter)->where('curriculum', $request->curriculum_filter);
-                    })->paginate(12)->withQueryString();
+                    })->paginate(18)->withQueryString();
             $curriculums = Curriculum::orderBy('curriculum', 'asc')->get();
             $gradefilter = $request->grade_filter;
             $curriculumfilter = $request->curriculum_filter;
@@ -889,7 +891,7 @@ class PrincipalController extends Controller
 
     //schedules
     public function schedulesIndex(){
-        $scheds = Schedule::orderby('sect_id', 'asc')->paginate(12);
+        $scheds = Schedule::orderby('sect_id', 'asc')->paginate(15);
         $subjects = Subject::orderBy('subject_name')->get();
         $rooms = Room::orderBy('room_number')->get();
         $sections = Section::orderBy('section_name')->get();
@@ -905,25 +907,13 @@ class PrincipalController extends Controller
     public function saveSchedule(ScheduleFormRequest $request){
         $data = $request->validated();
         $arrayToString = implode(',', $request->input('days'));
-        // check if sched already exists
-        // $ifexist = Schedule::where('sub_id', $data['sub_id'])
-        //                     ->where('room_id',  $data['room_id'])
-        //                     ->where('year_id', $data['year_id'])
-        //                     ->where('time_start', $data['time_start'])
-        //                     ->where('time_end', $data['time_end'])
-        //                     ->where('days', $arrayToString)->get();
-        // check if sched conflicts
-        // $ifconflict = Schedule::where('room_id',  $data['room_id'])
-        //                         ->where('sy_id', $data['sy_id'])
-        //                         ->where('id', $data['id'])
-        //                         ->where('time_start', $data['time_start'])
-        //                         ->where('time_end', $data['time_end'])->get();
-        // $ifExistResult = count($ifexist);
-        // $ifConflictResult = count($ifconflict);
-        // if($ifExistResult == 0){
-            // if($ifConflictResult == 0){
+        //check if sched already exists
+        $ifexist = Schedule::where('sub_id', $data['sub_id'])
+                            ->where('sect_id', $data['sect_id'])
+                            ->where('year_id', $data['year_id'])->first();
+        //check if sched conflicts
+        if(empty($ifexist)){
                 $data['days'] = $arrayToString;
-                // $schedule = Schedule::create($data);
                 $schedule = new Schedule;
                 $schedule->sub_id = $data['sub_id'];
                 $schedule->semester = $data['semester'];
@@ -935,13 +925,9 @@ class PrincipalController extends Controller
                 $schedule->year_id = $data['year_id'];
                 $schedule->room_id = $data['room_id'];
                 $schedule->save();
-
-            // }else{
-            //     return redirect('/set-schedules')->with('alert', 'Schedule is in conflict with other subjects!');
-            // }
-        // }else{
-        //     return redirect('/set-schedules')->with('alert', 'Schedule already exists!');
-        // }
+        }else{
+            return redirect('/set-schedules')->with('alert', 'Schedule already exists!');
+        }
         return redirect('/set-schedules')->with('message', 'Schedule Successfully Added');
     }
 
@@ -1001,7 +987,7 @@ class PrincipalController extends Controller
                             ->where('subject_name', 'LIKE', '%'.$search_text.'%')
                             ->orwhere('section_name', 'LIKE', '%'.$search_text.'%')
                             ->orderby('time_start','asc')
-                            ->paginate(12)->withQueryString();
+                            ->paginate(15)->withQueryString();
             if(count($scheds) == 0){
                 return redirect('/set-schedules')->with('alert', 'No results found for "'.$search_text.'" ');
             }else{
@@ -1012,7 +998,10 @@ class PrincipalController extends Controller
                 $syears = SchoolYear::where('is_current', '1')->get();
                 $allsy = SchoolYear::orderby('school_year')->get();
                 $syfilter = "";
-                return view('principal.set-schedules', compact('scheds', 'allsy', 'subjects', 'search_text', 'rooms', 'sections', 'teachers', 'syears', 'syfilter'));
+                $sectionfilter = "";
+                $trackfilter = "";
+                $semesterfilter = "";
+                return view('principal.set-schedules', compact('scheds', 'allsy', 'subjects', 'search_text', 'rooms', 'sections', 'teachers', 'syears', 'syfilter', 'sectionfilter', 'trackfilter', 'semesterfilter'));
             }
         }
     }
@@ -1175,7 +1164,7 @@ class PrincipalController extends Controller
         }
         $grading->save();
 
-        return back();
+        return back()->with('message', 'Grading Succesfully Changed!');
         
     }
 
@@ -1197,14 +1186,15 @@ class PrincipalController extends Controller
         }
         $sem->save();
 
-        return back();
+        return back()->with('message', 'Semester Succesfully Changed!');
         
     }
 
     public function principalClassList(){
         $sections = Section::orderby('section_name', 'asc')->get();
         $students = []; 
-        return view('principal.class-list', compact('sections', 'students'));
+        $selSection = "";
+        return view('principal.class-list', compact('sections', 'students', 'selSection'));
     }
 
     public function principalSelectYear(Request $request){
@@ -1220,7 +1210,10 @@ class PrincipalController extends Controller
         ->join('school_years', 'school_years.sy_id', '=', 'schedules.year_id')
         ->where('year_id', $current->sy_id)
         ->where('sect_id', $request->select_section)->groupby('stud_id')->orderby('sex', 'asc')->orderby('last_name', 'asc')->get();
-        return view('principal.class-list', compact('students', 'sections'));
+        //find the adviser of the section
+        $adviser = Adviser::join('users', 'users.id', '=', 'advisers.teacher_id')->where('tsection_id', $request->select_section)->where('tyear_id', $current->sy_id)->first();
+        $selSection = $request->select_section;
+        return view('principal.class-list', compact('students', 'sections', 'selSection', 'adviser'));
        
        
     }

@@ -2,7 +2,7 @@
 @section('title', 'Sections')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <form action="{{ url('searchSection') }}" type="get">
                 <div class="col-md-3 float-end">

@@ -2,7 +2,7 @@
 @section('title', 'Principal List')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card spinnerTarget">
+    <div class="card spinnerTarget vh-100">
         <div class="card-header tableCardHeader">
             <form action="{{ url('searchprincipal') }}" type="get">
                 <div class="col-md-3 float-end">

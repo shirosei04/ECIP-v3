@@ -2,7 +2,7 @@
 @section('title', 'Student List')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card spinnerTarget">
+    <div class="card spinnerTarget vh-100">
         <div class="card-header tableCardHeader">
             <form action="{{ url('aosearchstudent') }}" type="get">
                 <div class="col-md-3 float-end">
@@ -54,10 +54,14 @@
                         </div>
                 </div>
             </form>
+            
             <div class="table-responsive">
                 @if(!empty($search_text))
                 <div class="alert alert-success">Results for <strong style="color: red">"{{ $search_text }}"</strong></div>
                 @endif
+                @if (count($users) == 0)
+                <div class="alert alert-danger">No students found.</div>
+                @else
                 <table class="table table-sm table-hover">
                 <thead class="table-primary">
                     <tr>
@@ -69,9 +73,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($users) == 0)
-                        <div class="alert alert-danger">No students found.</div>
-                    @else
                     <?php
                         $c = 1;
                     ?>
@@ -82,7 +83,12 @@
                                     <td>{{ $user->student->lrn }}</td>
                                     <td>{{ $user->last_name }}</td>
                                     <td>{{ $user->first_name }}</td>
+                                    @if ($user->student->grade_lvl == "0")
+                                    <td>Kinder</td>
+                                    @else
                                     <td>{{ $user->student->grade_lvl }}</td>
+                                    @endif
+               
                                     <td> 
                                         <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewUserModal{{$user->id}}"><span class="btn-label"><i class="fas fa-eye"></i> View Details</span></a>
                                         <a type="button" href="{{url('/view-assessment/'.$user->id)}}"  class="btn btn-success btn-sm" ><span class="btn-label"><i class="fas fa-search-dollar"></i> View Assessment</span></a>

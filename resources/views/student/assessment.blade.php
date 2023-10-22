@@ -2,7 +2,7 @@
 @section('title', 'Assessment')
 
 @section('content')
-        <div class="card feeCard">
+        <div class="card feeCard vh-100">
             <div class="card-header tableCardHeader">
                 @if (Auth::user()->role == "Student")
                 <h3><i class="fas fa-dollar-sign"></i> Assessment</h3>

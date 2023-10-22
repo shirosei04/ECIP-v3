@@ -26,7 +26,11 @@ class CalendarController extends Controller
         $allsy = SchoolYear::orderby('school_year')->get();
         $sections = Section::orderBy('section_name')->get();
         $scheds = [];
-        return view('principal.schedules.view-plotted', compact('allsy', 'sections', 'scheds'));
+        $syfilter = "";
+        $sectionfilter = "";
+        $trackfilter = "";
+        $semesterfilter = "";
+        return view('principal.schedules.view-plotted', compact('allsy', 'sections', 'scheds', 'syfilter', 'trackfilter', 'semesterfilter', 'sectionfilter'));
     }
 
     public function filter_plot_scheds(Request $request)

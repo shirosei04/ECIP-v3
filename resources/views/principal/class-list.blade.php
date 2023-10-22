@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div class="card feeCard">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-calendar-alt"></i> Class Lists</h3>
         </div>
@@ -10,7 +10,7 @@
                     <select class="form-select" aria-label="Default select example" name="select_section" required>
                         <option value="" selected>Select Section</option>
                         @foreach($sections as $section)
-                        <option value="{{$section->section_id}}" >{{$section->section_name}}</option>
+                        <option value="{{$section->section_id}}" {{ ($selSection==$section->section_id)? "selected" : "" }}>{{$section->section_name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -32,8 +32,16 @@
         @if(count($students) == 0)
         <div class="alert alert-danger" role="alert">No students found for this section.</div>
         @else
-       
-        <div class="table-responsive ">
+       <div class="card m-3">
+        <div class="card-header">
+            @if(!empty($adviser))
+            <h6><a href="{{url('advisers')}}" style="text-decoration:none; color:black">Class Adviser:</a> {{$adviser->last_name . ", " . $adviser->first_name . " " . $adviser->middle_name . " " . $adviser->suffix}}</h6>
+            @else
+            <h5><a href="{{url('advisers')}}" style="text-decoration:none;">Class Adviser:</a> No Adviser Assigned</h5>
+            @endif
+            <h6>Number of Students: {{count($students)}}</h6>
+        </div>
+        <div class="table-responsive m-3">
             <table class="table table-sm table-hover">
             <thead class="table-primary">
                 <tr>
@@ -51,8 +59,8 @@
                  <form action="{{url('class-list-report')}}" method="POST">
                  @csrf
                  <button type="submit" class="btn btn-outline-danger float-end m-3"><i class="fas fa-file-export"></i> Generate Report</button>
-                 <form action="{{url('teacher-view-grades')}}" method="POST">
-                    @csrf
+
+                  
                  @foreach ($students as $student)
                             <tr>
                                 <input type="hidden" name="id[]" value="{{$student->id}}">
@@ -74,6 +82,7 @@
           
             </table>
 
+        </div>
         </div>
         </form>
         @endif

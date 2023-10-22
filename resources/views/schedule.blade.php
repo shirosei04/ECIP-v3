@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div class="card feeCard">
+    <div class="card">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-calendar-alt"></i> Schedule</h3>
         </div>
@@ -54,9 +54,6 @@
             </div>
       
             @endif
-
-   
-        
     </div>  
 @endsection
 @section('scripts')

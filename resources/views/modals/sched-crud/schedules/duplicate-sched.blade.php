@@ -50,7 +50,7 @@
                                     </div>
 
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="days[]" value="T" {{ (str_contains($sched->days, "T"))? "checked" : "" }} id="flexCheckDefault1">
+                                        <input class="form-check-input" type="checkbox" name="days[]" value="T" {{ (strpos($sched->days,"T"))? "checked" : "" }} id="flexCheckDefault1">
                                         <label class="form-check-label" for="flexCheckDefault1">
                                        Tuesday
                                         </label>
@@ -139,7 +139,6 @@
                                         {{-- @foreach ($teachers as $teacher)
                                         <option value="{{$teacher->id}}" {{ ($sched->teacher->id==$teacher->id)? "selected" : "" }}>{{$teacher->first_name . " " . $teacher->middle_name . " " . $teacher->last_name . " " . $teacher->suffix}} </option>
                                         @endforeach --}}
-
                                         @if(is_null($sched->teacher))
                                         {{-- if null --}}
                                             <option value="">No Assigned Teacher</option>
@@ -147,6 +146,7 @@
                                             <option value="{{$sched->id}}">{{$teacher->first_name . " " . $teacher->middle_name . " " . $teacher->last_name . " " . $teacher->suffix}}</option>
                                             @endforeach
                                         @else
+                                            <option value="">No Assigned Teacher</option>
                                             @foreach ($teachers as $teacher)
                                             <option value="{{$teacher->id}}" {{ ($sched->teacher->id==$teacher->id)? "selected" : "" }}>{{$teacher->first_name . " " . $teacher->middle_name . " " . $teacher->last_name . " " . $teacher->suffix}} </option>
                                             @endforeach
@@ -169,13 +169,13 @@
                            
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    
                                     <label class="form-label fw-bold">School Year</label>
-                                    @foreach ($allsy as $years)
-                                    <input type="hidden" class="form-control" value="{{$years->sy_id}}" name="year_id" >
-                                    <input type="text" class="form-control" value="{{$sched->schoolYear->school_year}}" disabled>
-                                    @endforeach
-                                   
+                                    <select class="form-select" aria-label="Default select example" name="year_id" required>
+                                        <option value="" selected>Choose School Year</option>
+                                        @foreach ($allsy as $year)
+                                        <option value="{{$year->sy_id}}" {{ ($sched->schoolYear->school_year==$year->school_year)? "selected" : "" }}>{{$year->school_year}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
     
                                 <div class="col-md-6 mb-3">

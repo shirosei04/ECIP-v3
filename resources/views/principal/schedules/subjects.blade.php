@@ -2,7 +2,7 @@
 @section('title', 'Subjects')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <form action="{{ url('searchSubject') }}" type="get">
                 <div class="col-md-3 float-end">
@@ -23,7 +23,7 @@
                     <select class="form-select" name="curriculum_filter">
                         <option value="" selected>Filter by Curriculum</option>
                         @foreach($curriculums as $curriculum)
-                        <option value="{{$curriculum->curriculum}}">{{$curriculum->curriculum}}</option>
+                        <option value="{{$curriculum->curriculum}}" {{ ($curriculumfilter==$curriculum->curriculum)? "selected" : "" }}>{{$curriculum->curriculum}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -31,32 +31,32 @@
                 <div class="col-3">
                     <select class="form-select" name="grade_filter">
                         <option value="" selected>Filter by Grade Level</option>
-                        <option value="Kinder">Kinder</option>
-                        <option value="Grade 1">Grade 1</option>
-                        <option value="Grade 2">Grade 2</option>
-                        <option value="Grade 3">Grade 3</option>
-                        <option value="Grade 4">Grade 4</option>
-                        <option value="Grade 5">Grade 5</option>
-                        <option value="Grade 6">Grade 6</option>
-                        <option value="Grade 7">Grade 7</option>
-                        <option value="Grade 8">Grade 8</option>
-                        <option value="Grade 9">Grade 9</option>
-                        <option value="Grade 10">Grade 10</option>
-                        <option value="Grade 11">Grade 11</option>
-                        <option value="Grade 12">Grade 12</option>
+                        <option value="Kinder"{{ ($gradefilter=="Kinder")? "selected" : "" }}>Kinder</option>
+                        <option value="Grade 1"{{ ($gradefilter=="Grade 1")? "selected" : "" }}>Grade 1</option>
+                        <option value="Grade 2"{{ ($gradefilter=="Grade 2")? "selected" : "" }}>Grade 2</option>
+                        <option value="Grade 3"{{ ($gradefilter=="Grade 3")? "selected" : "" }}>Grade 3</option>
+                        <option value="Grade 4"{{ ($gradefilter=="Grade 4")? "selected" : "" }}>Grade 4</option>
+                        <option value="Grade 5"{{ ($gradefilter=="Grade 5")? "selected" : "" }}>Grade 5</option>
+                        <option value="Grade 6"{{ ($gradefilter=="Grade 6")? "selected" : "" }}>Grade 6</option>
+                        <option value="Grade 7"{{ ($gradefilter=="Grade 7")? "selected" : "" }}>Grade 7</option>
+                        <option value="Grade 8"{{ ($gradefilter=="Grade 8")? "selected" : "" }}>Grade 8</option>
+                        <option value="Grade 9"{{ ($gradefilter=="Grade 9")? "selected" : "" }}>Grade 9</option>
+                        <option value="Grade 10"{{ ($gradefilter=="Grade 10")? "selected" : "" }}>Grade 10</option>
+                        <option value="Grade 11"{{ ($gradefilter=="Grade 11")? "selected" : "" }}>Grade 11</option>
+                        <option value="Grade 12"{{ ($gradefilter=="Grade 12")? "selected" : "" }}>Grade 12</option>
                     </select>
                 </div>
 
                 <div class="col-3">
                     <select class="form-select" name="track_filter">
                         <option value="" selected>Filter by Track</option>
-                        <option value="ABM">ABM</option>
-                        <option value="GAS">GAS</option>
-                        <option value="HUMSS">HUMSS</option>
-                        <option value="STEM">STEM</option>
-                        <option value="TVL">TVL</option>
-                        <option value="General Subject(SHS)">General Subject(SHS)</option>
-                        <option value="Not Applicable">Not Applicable</option>
+                        <option value="ABM" {{ ($trackfilter=="ABM")? "selected" : "" }}>ABM</option>
+                        <option value="GAS" {{ ($trackfilter=="GAS")? "selected" : "" }}>GAS</option>
+                        <option value="HUMSS" {{ ($trackfilter=="HUMSS")? "selected" : "" }}>HUMSS</option>
+                        <option value="STEM" {{ ($trackfilter=="STEM")? "selected" : "" }}>STEM</option>
+                        <option value="TVL" {{ ($trackfilter=="TVL")? "selected" : "" }}>TVL</option>
+                        <option value="General Subject(SHS)"{{ ($trackfilter=="General Subject(SHS)")? "selected" : "" }}>General Subject(SHS)</option>
+                        <option value="Not Applicable"{{ ($trackfilter=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                     </select>
                 </div>
 
@@ -72,6 +72,9 @@
             <div class="alert alert-success" role="alert">{{ session('message') }}</div>
             @endif
             <div class="table-responsive">
+                @if (count($subjects) == 0)
+                <div class="alert alert-danger">No Subjects Found </div>
+                @else
                 <table class="table table-bordered table-sm">
                 <thead class="table-primary">
                     <tr>
@@ -83,13 +86,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($subjects) == 0)
-                    <div class="alert alert-danger">No Subjects Found ({{$gradefilter . " " . $trackfilter . " " . $curriculumfilter}}) </div>
-                    {{-- <div class="alert alert-danger">No Subjects Found for {{$gradefilter . " " . $trackfilter . " " . $curriculumfilter}} .</div> --}}
-                    @else
-                    @if($gradefilter != "")
-                    <div class="alert alert-success" role="alert">Filter result(s) for "{{$gradefilter . ", Track: " . $trackfilter . ", " . $curriculumfilter}}"</div>
-                    @endif
+                  
                     @if(!empty($search_text))
                     <div class="alert alert-success" role="alert">Search result(s) for "{{$search_text}}"</div>
                     @endif

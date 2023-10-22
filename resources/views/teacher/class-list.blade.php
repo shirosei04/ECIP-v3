@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div class="card feeCard">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-calendar-alt"></i> Advisory Class</h3>
         </div>
@@ -9,8 +9,9 @@
                 <div class="col-md-3">
                     <select class="form-select" aria-label="Default select example" name="select_year">
                         <option value=""  selected>Select School Year</option>
-                        @foreach($syears as $year)
-                        <option value="{{$year->sy_id}}" >{{$year->school_year}}</option>
+                        
+                        @foreach($syears as $syear)
+                        <option value="{{$syear->sy_id}}" {{ ($selectedYear==$syear->sy_id)? "selected" : "" }}>{{$syear->school_year}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -18,9 +19,9 @@
                 <div class="col-md-3">
                     <select class="form-select" aria-label="Default select example" name="select_sem" required> 
                         <option value="" selected>Select Semester</option>
-                        <option value="1st" >1st</option>
-                        <option value="2nd" >2nd</option>
-                        <option value="Not Applicable" >Not Applicable</option>
+                        <option value="1st" {{ ($semester=="1st")? "selected" : "" }}>1st</option>
+                        <option value="2nd"  {{ ($semester=="2nd")? "selected" : "" }}>2nd</option>
+                        <option value="Not Applicable" {{ ($semester=="Not Applicable")? "selected" : "" }} >Not Applicable</option>
                     </select>
                 </div>
 
@@ -43,25 +44,30 @@
            <td>{{$student->first_name}}</td>
         </tr>
         @endforeach --}}
-        <div class="table-responsive ">
-            @if(!empty($students))
-            <div class="alert alert-success">
-                @foreach($list as $l)
-                <strong>School Year: </strong> {{$year->school_year}}<strong> / Grade:</strong> @if($l->section_grade_lvl == 0)Kinder @else {{$l->section_grade_lvl}}  @endif <strong> / Section:</strong> {{$l->section_name}}
-                @endforeach
-            </div>
-            @endif
-            @if (count($students) == 0)
-            <div class="alert alert-danger">No students found.</div>
-            @else
+        @if (count($students) == 0)
+        {{-- <div class="alert alert-danger">No students found.</div> --}}
+        @else
+      
+        <div class="card m-3">
+        @if(!empty($students))
+            @foreach($list as $l)
+                <div class="card-header">
+                    <h6>School Year: {{$syear->school_year}}</h6>
+                    <h6>Semester: {{$semester}}</h6>
+                    <h6>Grade: @if($l->section_grade_lvl == 0)Kinder @else {{$l->section_grade_lvl}}@endif</h6>
+                    <h6>Section: {{$section = $l->section_name}}</h6>
+                </div>
+             @endforeach
+        @endif
+
+        <div class="table-responsive m-3">
+          
+          
             <table class="table table-sm table-hover">
             <thead class="table-primary">
                 <tr>
                     <th>LRN</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Suffix</th>
+                    <th>Full Name</th>
                     <th>Current Grade Level</th>
                     <th>Action</th>
                 </tr>
@@ -77,13 +83,11 @@
                             <tr>
 
                                 <input type="hidden" class="delete_val" id="delete_val" name="student_id" value="{{$student->id}}">
-                                <input type="hidden" class="delete_val" id="delete_val" name="selectedYear" value="{{$year->sy_id}}">
+                                <input type="hidden" class="delete_val" id="delete_val" name="selectedYear" value="{{$syear->sy_id}}">
                                 <input type="hidden" name="semester" value="{{$semester}}">
+                                <input type="hidden" name="section" value="{{$section}}">
                                 <td>{{ $student->lrn }}</td>
-                                <td>{{ $student->last_name }}</td>
-                                <td>{{ $student->first_name }}</td>
-                                <td>{{ $student->middle_name }}</td>
-                                <td>{{ $student->suffix }}</td>
+                                <td>{{ $student->last_name . ", " . $student->first_name . " " . $student->middle_name . " " . $student->suffix  }}</td>
                                 <td>{{ $student->grade_lvl }}</td>
                                 <td> 
                                     <button type="submit" class="btn btn-info btn-sm"><span class="btn-label"><i class="fas fa-eye"></i> View Grades</span></button>
@@ -100,5 +104,6 @@
                 {{$users->links()}}
             </tr> --}}
         </div>
+    </div>
     </div>  
 @endsection

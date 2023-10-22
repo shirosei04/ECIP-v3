@@ -23,15 +23,19 @@ return new class extends Migration
             array(
                 [
                     'grading' => '1st',
+                    'status' => '1'
                 ],
                 [
                     'grading' => '2nd',
+                    'status' => '0'
                 ],
                 [
                     'grading' => '3rd',
+                    'status' => '0'
                 ],
                 [
                     'grading' => '4th',
+                    'status' => '0'
                 ],
             )
         );

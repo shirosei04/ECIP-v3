@@ -45,7 +45,7 @@
 
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Capacity</label>
-                                    <input type="float" class="form-control" name="capacity" required>
+                                    <input type="number" class="form-control" name="capacity" required>
                                 </div>
                             </div>
                     </div>

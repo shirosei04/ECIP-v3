@@ -27,7 +27,8 @@ return new class extends Migration
             $table->string('mogts'); //method of going to school
             $table->boolean('is_madrasah_enrolled'); 
             $table->boolean('is_4ps_member'); 
-            $table->smallInteger('grade_lvl'); 
+            $table->smallInteger('grade_lvl');
+            $table->string('track')->nullable();
             $table->boolean('enrollment_status')->default('0');
             $table->timestamps();
 

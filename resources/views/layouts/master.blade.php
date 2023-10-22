@@ -136,9 +136,17 @@
                                     @endif
                                     {{-- PRINCIPAL --}}
                                     @if(Auth::user()->role == 'Principal')
-                                        {{-- <a class="nav-link {{ Request::is('announcements') ? 'active':'' }}" href="{{ url('announcements') }}">
-                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-bullhorn fa-fw"></i> Announcements</span></div>
-                                        </a> --}}
+                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
+                                            <div class="sb-nav-link-icon"> <span class="inline-block smlFont"><i class="fas fa-award fa-fw"></i> Awarding</span></div>
+                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                        </a>
+                                        <div class="collapse" id="collapseLayouts2" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                                            <nav class="sb-sidenav-menu-nested nav">
+                                                <a class="nav-link smlFont {{ Request::is('awards') ? 'active':'' }}" href="{{ url('awards') }}">Awards List</a>
+                                                <hr class="mt-1 mb-1">
+                                                <a class="nav-link smlFont {{ Request::is('awardees') ? 'active':'' }}" href="{{ url('awardees') }}">Awardees</a>
+                                            </nav>
+                                        </div>
                                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                             <div class="sb-nav-link-icon"> <span class="inline-block smlFont"><i class="fas fa-columns fa-fw"></i> Scheduling</span></div>
                                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -159,26 +167,16 @@
                                             </nav>
                                         </div>
                                     
-                                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts">
-                                            <div class="sb-nav-link-icon"> <span class="inline-block smlFont"><i class="fas fa-award fa-fw"></i> Awarding</span></div>
-                                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                        </a>
-                                        <div class="collapse" id="collapseLayouts2" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                            <nav class="sb-sidenav-menu-nested nav">
-                                                <a class="nav-link smlFont {{ Request::is('awards') ? 'active':'' }}" href="{{ url('awards') }}">Awards List</a>
-                                                <hr class="mt-1 mb-1">
-                                                <a class="nav-link smlFont {{ Request::is('awardees') ? 'active':'' }}" href="{{ url('awardees') }}">Awardees</a>
-                                                {{-- <div class="sb-sidenav-menu-heading mt-0">-MAIN-</div>
-                                                <a class="nav-link smlFont {{ Request::is('principal/scheduling/') ? 'active':'' }}" href="{{ url('/principal/awardGive') }}">Issue Awards </a> --}}
-                                            </nav>
-                                        </div>
             
-                                        {{-- <a class="nav-link {{ Request::is('student-list') ? 'active':'' }}" href="{{ url('student-list') }}">
-                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-list fa-fw"></i> Student List</span></div>
-                                        </a> --}}
+                                        <a class="nav-link {{ Request::is('grades-approval') ? 'active':'' }}" href="{{ url('grades-approval') }}">
+                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-thumbs-up"></i> Grades Approval</span></div>
+                                        </a>
+                                        <a class="nav-link {{ Request::is('principal-class-list') ? 'active':'' }}" href="{{ url('principal-class-list') }}">
+                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-list-ol"></i> Class Lists</span></div>
+                                        </a>
 
                                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts">
-                                            <div class="sb-nav-link-icon"> <span class="inline-block smlFont"><i class="fas fa-tasks"></i> Manage Users</span></div>
+                                            <div class="sb-nav-link-icon"> <span class="inline-block smlFont"><i class="fas fa-users"></i> Manage Users</span></div>
                                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                         </a>
                                         <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -191,12 +189,7 @@
                                                 <a class="nav-link smlFont {{ Request::is('archived-list') ? 'active':'' }}" href="{{ url('archived-list') }}">Archived Users </a>
                                             </nav>
                                         </div>
-                                        <a class="nav-link {{ Request::is('grades-approval') ? 'active':'' }}" href="{{ url('grades-approval') }}">
-                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-thumbs-up"></i> Grades Approval</span></div>
-                                        </a>
-                                        <a class="nav-link {{ Request::is('principal-class-list') ? 'active':'' }}" href="{{ url('principal-class-list') }}">
-                                            <div class="sb-nav-link-icon"><span class="inline-block smlFont"><i class="fas fa-list-ol"></i> Class Lists</span></div>
-                                        </a>
+                                       
                                     @endif
                                     {{-- ADMISSION OFFICER --}}
                                     @if(Auth::user()->role == 'Admission Officer')

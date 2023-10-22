@@ -254,9 +254,10 @@
                                   <p class="text-secondary mb-1"> Grade Level: {{Auth::user()->student->grade_lvl}}  </p>
                                 
                                 @endif
-                              
+                                <p class="text-secondary mb-1"> Track: {{Auth::user()->student->track}} </p>
                               <p class="text-secondary mb-1"> LRN: {{Auth::user()->student->lrn}} </p>
                               <hr>
+
                               <p class="text-secondary mb-1"> System ID: {{Auth::user()->id}} </p>
                               <p class="text-secondary fst-italic ">Joined {{date('F d, Y', strTotime(Auth::user()->date_of_registration))}} </p>
                               
@@ -482,7 +483,7 @@
             
                                         <div class="col-md-3">
                                             <label for="" class="col-12 col-form-label text-start">{{ __('Contact Number') }}</label>
-                                            <input id="" type="number" class="form-control" name="inputs[`+i+`][contact_no]" value=""  >
+                                            <input id="" type="text" class="form-control" name="inputs[`+i+`][contact_no]" value="" maxLength="11">
                                         </div>
             
                                         <div class="col-md-3">

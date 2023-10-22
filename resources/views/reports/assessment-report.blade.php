@@ -56,9 +56,9 @@
     <div class="card-body" style="margin-top: 15px;">
 
 
-        <div class="col-md-3 pb-3">
+        <div class="col-md-3">
             <label for="" class="col-md-4 col-form-label fw-bold fs-4">{{ __('Total Due:') }}</label>
-            <input type="text" class="form-control fw-bold fs-4" value="{{number_format($allFees, 2) }}" disabled>
+            <input type="text" class="form-control fw-bold" value="{{number_format($allFees, 2) }}" disabled>
         </div>
         {{-- <p>Running balance from other semesters/school-years: {{number_format($otherBal, 2) }}</p> --}}
         <table class="table">
@@ -90,6 +90,12 @@
                     </tr>
                 @endforeach
             </tbody>
+            
+                <div class="col-md-3 pb-3">
+                    <label for="" class="col-form-label fw-bold text-start">{{ __('Running Balance:') }}</label>
+                    <input type="text" class="form-control" value="{{ number_format($fee->running_balance, 2)}}" disabled>
+                </div>
+
         </table>
 
     </div>

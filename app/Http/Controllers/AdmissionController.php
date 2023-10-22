@@ -28,7 +28,7 @@ class AdmissionController extends Controller
         $enrollees = User::where('is_verified', '=', '0')
                          ->where('role', '=', 'Student')
                          ->where('status', '=', '1')
-                         ->orderBy('date_of_registration', 'asc')->paginate(10);
+                         ->orderBy('date_of_registration', 'asc')->paginate(18);
         $gradefilter = "nofilter";
         return view('ao.verify-register', compact('enrollees', 'gradefilter'));
     }
@@ -149,7 +149,7 @@ class AdmissionController extends Controller
                     ->orderBy('date_of_registration', 'asc')
                     ->when($request->grade_filter != null, function ($q) use ($request) {
                             return $q->where('grade_lvl', $request->grade_filter);
-                    })->paginate(10);
+                    })->paginate(18)->withQueryString();
             $gradefilter = $request->grade_filter;
                     return view('ao.verify-register', compact('enrollees', 'gradefilter'));
         }
@@ -172,7 +172,7 @@ class AdmissionController extends Controller
                     ->orderBy('date_of_registration', 'asc')
                     ->when($request->grade_filter != null, function ($q) use ($request) {
                             return $q->where('grade_lvl', $request->grade_filter);
-                    })->paginate(10);
+                    })->paginate(18)->withQueryString();
             $gradefilter = $request->grade_filter;
                     return view('ao.archived-users', compact('enrollees', 'gradefilter'));
         }
@@ -218,7 +218,7 @@ class AdmissionController extends Controller
     public function viewAssessment($id){
         DB::statement("SET SQL_MODE=''");
         $myFees = StudentAssessment::join('school_years', 'school_years.sy_id', '=', 'student_fees.year_id')
-                                   ->where('student_id', '=', $id)->orderby('payment_date', 'desc')->get();
+                                   ->where('student_id', '=', $id)->orderby('created_at', 'desc')->get();
         $allFees = StudentAssessment::where('student_id', $id)->sum('running_balance');
         $student = User::where('id', $id)->get();
        // $allFees = StudentAssessment::where('student_id', '=', Auth::user()->id)->sum('running')
@@ -270,7 +270,9 @@ class AdmissionController extends Controller
                         ->where('stud_id', $id)->groupBy('year_id')->get();
         $studId = $id;
         $student = User::where('id', $id)->get();
-        return view('student.grades', compact('grades', 'studId', 'student'));
+        $selYear = "";
+        $selSem = "";
+        return view('student.grades', compact('grades', 'studId', 'student', 'selYear', 'selSem'));
     }
 
     public function filtered_grades(Request $request){
@@ -313,10 +315,13 @@ class AdmissionController extends Controller
         ->join('subjects', 'subjects.subject_id', '=', 'schedules.sub_id')
         ->where('stud_id', $studId)
         ->where('year_id', $request->select_year)->groupby('subject_grade_lvl')->first();
+
+        $selYear = $request->select_year;
+        $selSem =  $request->select_sem;
        if(count($mygrades) == 0){
             return redirect()->back()->with('alert', 'No grades found');
        }else{
-        return view('student.grades', compact('mygrades', 'grades', 'selectedSy', 'studId', 'student', 'schedules', 'sections', 'gradelvl'));
+        return view('student.grades', compact('mygrades', 'grades', 'selectedSy', 'studId', 'student', 'schedules', 'sections', 'gradelvl', 'selYear', 'selSem'));
        }
     
     }
@@ -350,7 +355,7 @@ class AdmissionController extends Controller
                 'schedule_id' => $sched->sched_id,
             ]);
         }
-        return redirect()->back()->with('message', 'Section Tranfer Success');
+
 
     }
 

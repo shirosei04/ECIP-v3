@@ -23,9 +23,11 @@ return new class extends Migration
             array(
                 [
                     'semester' => '1st',
+                    'sem_status' => '1'
                 ],
                 [
                     'semester' => '2nd',
+                    'sem_status' => '0'
                 ],
             )
         );

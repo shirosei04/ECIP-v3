@@ -2,7 +2,7 @@
 @section('title', 'School Year')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <form action="{{ url('searchSy') }}" type="get">
                 
@@ -17,14 +17,18 @@
             <a data-bs-toggle="modal" data-bs-target="#addSyModal" class="btn btn-success float-start">Add School Year</a>
             @include('modals.sched-crud.sy.add-sy')
         </div>
-
+        @if (session('alert'))
+        <div class="alert alert-danger" role="alert">{{ session('alert') }}</div>
+        @elseif (session('message'))
+        <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+        @endif
         <div class="card-body">
             <div class="col">
                 <div class="accordion m-3" style="text-align: center " id="accordionExample">
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            <strong> Semesters (FOR SHS ONLY)</strong>
+                            <strong> Semesters for Enrollment (FOR SHS ONLY)</strong>
                         </button>
                       </h2>
                       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -57,11 +61,7 @@
                     </div>
                 </div>
             </div>
-            @if (session('alert'))
-            <div class="alert alert-danger" role="alert">{{ session('alert') }}</div>
-            @elseif (session('message'))
-            <div class="alert alert-success" role="alert">{{ session('message') }}</div>
-            @endif
+
             <div class="table-responsive">
                 <table class="table table-bordered table-sm">
                 <thead class="table-primary">
@@ -276,7 +276,7 @@
             e.preventDefault();
             // var spinner  = '<div class="loader fs-3 fw-bold">Please wait...</div>';
             var delete_id = $(this).closest("tr").find('.delete_val').val();
-             alert(delete_id);
+            //  alert(delete_id);
                 swal({
                 title: "Are you sure?",
                 text: "This will change the current year into this year",
@@ -315,7 +315,7 @@
             e.preventDefault();
             // var spinner  = '<div class="loader fs-3 fw-bold">Please wait...</div>';
             var delete_id = $(this).closest("tr").find('.delete_val').val();
-             alert(delete_id);
+            //  alert(delete_id);
                 swal({
                 title: "Are you sure?",
                 text: "This will change the current year into this year",

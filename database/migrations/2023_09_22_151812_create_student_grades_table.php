@@ -17,11 +17,11 @@ return new class extends Migration
             $table->bigIncrements('sg_id');
             $table->unsignedBigInteger('stud_id');
             $table->unsignedBigInteger('schedule_id');
-            $table->unsignedBigInteger('frst_grade')->nullable();
-            $table->unsignedBigInteger('scnd_grade')->nullable();
-            $table->unsignedBigInteger('thrd_grade')->nullable();
-            $table->unsignedBigInteger('frth_grade')->nullable();
-            $table->boolean('view_status')->default(0);
+            $table->string('frst_grade')->nullable();
+            $table->string('scnd_grade')->nullable();
+            $table->string('thrd_grade')->nullable();
+            $table->string('frth_grade')->nullable();
+            $table->boolean('view_status')->default(1);
 
             $table->foreign('stud_id')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('schedule_id')->references('sched_id')->on('schedules')->onDelete('restrict');

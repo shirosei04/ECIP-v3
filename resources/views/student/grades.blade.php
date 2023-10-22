@@ -20,16 +20,16 @@
                     <select class="form-select" aria-label="Default select example" name="select_year" required>
                         <option value="" selected>Select School Year</option>
                         @foreach($grades as $grade)
-                        <option value="{{$grade->year_id}}" >{{$grade->school_year}}</option>
+                        <option value="{{$grade->year_id}}" {{ ($selYear==$grade->year_id)? "selected" : "" }}>{{$grade->school_year}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3">
                     <select class="form-select" aria-label="Default select example" name="select_sem" required> 
                         <option value="" selected>Select Semester</option>
-                        <option value="1st" >1st</option>
-                        <option value="2nd" >2nd</option>
-                        <option value="Not Applicable" >Not Applicable</option>
+                        <option value="1st" {{ ($selSem=="1st")? "selected" : "" }}>1st</option>
+                        <option value="2nd"  {{ ($selSem=="2nd")? "selected" : "" }}>2nd</option>
+                        <option value="Not Applicable" {{ ($selSem=="Not Applicable")? "selected" : "" }} >Not Applicable</option>
                     </select>
                 </div>
                 <div class="col-3">
@@ -45,7 +45,7 @@
                     <select class="form-select" aria-label="Default select example" name="select_year" required> 
                         <option value="" selected>Select School Year</option>
                         @foreach($grades as $grade)
-                        <option value="{{$grade->year_id}}" >{{$grade->school_year}}</option>
+                        <option value="{{$grade->year_id}}" {{ ($selYear==$grade->year_id)? "selected" : "" }}>{{$grade->school_year}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -53,9 +53,9 @@
                 <div class="col-md-3">
                     <select class="form-select" aria-label="Default select example" name="select_sem" required> 
                         <option value="" selected>Select Semester</option>
-                        <option value="1st" >1st</option>
-                        <option value="2nd" >2nd</option>
-                        <option value="Not Applicable" >Not Applicable</option>
+                        <option value="1st" {{ ($selSem=="1st")? "selected" : "" }}>1st</option>
+                        <option value="2nd" {{ ($selSem=="2nd")? "selected" : "" }}>2nd</option>
+                        <option value="Not Applicable" {{ ($selSem=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                     </select>
                 </div>
 
@@ -74,14 +74,14 @@
         <div class="alert alert-danger" role="alert">{{ session('alert') }}</div>
         @endif
 
-         @if(!empty($selectedSy))
+         {{-- @if(!empty($selectedSy))
          <div class="alert alert-success m-3">
             @foreach($selectedSy as $year)
             <h5>S.Y {{$year->school_year}}</h5>
            @endforeach
 
          </div>
-        @endif
+        @endif --}}
 
         @if(!empty($mygrades))
             <div class="accordion p-3" id="accordionPanelsStayOpenExample">
@@ -140,37 +140,67 @@
                                         @if($gradelvl->subject_grade_lvl != "Grade 11" && $gradelvl->subject_grade_lvl != "Grade 12")
                                             <td>{{$mygrade->thrd_grade}}</td>
                                             <td>{{$mygrade->frth_grade}}</td>
-                                            @if(!empty($mygrade->frth_grade))
-                                            <td>{{$average = round(($mygrade->frth_grade + $mygrade->frst_grade + $mygrade->thrd_grade + $mygrade->scnd_grade) / 4)}}</td>
-                                            @endif
-                                            @php
-                                            $averages = $averages + $average;
-                                            $c++;
-                                            @endphp
-                                            @if(!empty($mygrade->frth_grade))
-                                                @if(round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4) >= 75)
-                                                <td>PASSED</td>
-                                                @else
-                                                <td>FAILED</td>
-                                                @endif
+                                            @if (!empty($mygrade->frth_grade & $mygrade->frst_grade & $mygrade->thrd_grade & $mygrade->scnd_grade))
+                                            @if($mygrade->frth_grade == "INC" | $mygrade->frst_grade == "INC" | $mygrade->thrd_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                            <td>INC</td>
+                                            @elseif($mygrade->frth_grade == "NG" | $mygrade->frst_grade == "NG" | $mygrade->thrd_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                            <td>NG</td>
                                             @else
-                                                <td></td>
+                                            <td>{{$average = round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4)}}</td>
+                                                @php
+                                                $averages = $averages + $average;
+                                                $c++;
+                                            @endphp
+                                            @endif
+                                            @else
+                                            {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
+                                            <td></td>
+                                            @endif
+                                          {{-- IF MAY FOURTH GRADE NA, CALCULATE UNG STATUS --}}
+                                          @if(!empty($mygrade->frth_grade) & !empty($mygrade->frst_grade) & !empty($mygrade->scnd_grade) & !empty($mygrade->thrd_grade))
+                                          @if($mygrade->frth_grade == "INC" | $mygrade->frst_grade == "INC" | $mygrade->thrd_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                          <td>INC</td>
+                                          @elseif($mygrade->frth_grade == "NG" | $mygrade->frst_grade == "NG" | $mygrade->thrd_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                          <td>NG</td>
+                                          @else
+                                              @if(round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4) >= 75)
+                                              <td>PASSED</td>
+                                              @else
+                                              <td>FAILED</td>
+                                              @endif 
+                                            @endif
+                                            {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
+                                            @else
                                                 <td></td>
                                             @endif
                                         
                                         @else
                                              {{-- IF SUBJECT IS FOR GRADE 11 OR 12 --}}
-                                            @if(!empty($mygrade->scnd_grade))
+                                            @if(!empty($mygrade->scnd_grade) & !empty($mygrade->frst_grade))
+                                                @if($mygrade->frst_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                <td>INC</td>
+                                                @elseif($mygrade->frst_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                <td>NG</td>
+                                                @else
                                                 <td>{{$average = round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) }}</td>
                                                 @php
                                                 $averages = $averages + $average;
                                                 $c++;
-                                               @endphp
-                                                    @if(round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) >= 75)
-                                                    <td>PASSED</td>
+                                                @endphp
+                                                @endif
+                                                @if(!empty($mygrade->frst_grade) & !empty($mygrade->scnd_grade))
+                                                    @if($mygrade->frst_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                    <td>INC</td>
+                                                    @elseif($mygrade->frst_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                    <td>NG</td>
                                                     @else
-                                                    <td>FAILED</td>
+                                                        @if(round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) >= 75)
+                                                        <td>PASSED</td>
+                                                        @else
+                                                        <td>FAILED</td>
+                                                        @endif 
                                                     @endif
+                                                @endif
                                             @else
                                                 <td></td>
                                                 <td></td>
@@ -181,11 +211,11 @@
                                     @endforeach
                                 </tbody>
                                 <br><br>  <p><small class="fw-bold">General Weighted Average:
-                                    @if($c == count($mygrades)) {{ ($fave = $averages / $c) }} @endif</small></p>
+                                    @if($c == count($mygrades)) {{ number_format(($fave = $averages / $c), 2) }} @endif</small></p>
                                 <input type="hidden" name="average" value={{$fave}}>
                                 </table>    
                             @elseif(Auth::user()->role == "Student")
-                                <table class="table table-hover table-borderless">
+                                <table class="table table-borderless">
                                     <thead>
                                         <tr>
                                             <th>Section</th>
@@ -220,40 +250,75 @@
                                                <td>{{$mygrade->thrd_grade}}</td>
                                                <td>{{$mygrade->frth_grade}}</td>
                                                {{-- IF MAY FOURTH GRADE NA, CALCULATE AVERAGE --}}
-                                               @if(!empty($mygrade->frth_grade))
-                                               <td>{{$average = round(($mygrade->frth_grade + $mygrade->frst_grade + $mygrade->thrd_grade + $mygrade->scnd_grade) / 4) }}</td>
-                                               @php
-                                                  $averages = $averages + $average;
-                                                  $c++;
-                                               @endphp
-                                         
-                                               @endif
+                                                @if (!empty($mygrade->frth_grade & $mygrade->frst_grade & $mygrade->thrd_grade & $mygrade->scnd_grade))
+                                                    @if($mygrade->frth_grade == "INC" | $mygrade->frst_grade == "INC" | $mygrade->thrd_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                    <td>INC</td>
+                                                    @elseif($mygrade->frth_grade == "NG" | $mygrade->frst_grade == "NG" | $mygrade->thrd_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                    <td>NG</td>
+                                                    @else
+                                                    <td>{{$average = round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4)}}</td>
+                                                        @php
+                                                        $averages = $averages + $average;
+                                                        $c++;
+                                                    @endphp
+                                                    @endif
+                                                @else
+                                                {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
+                                                <td></td>
+                                                @endif
                                                  {{-- IF MAY FOURTH GRADE NA, CALCULATE UNG STATUS --}}
-                                               @if(!empty($mygrade->frth_grade))
-                                                 {{-- IF HIGHER OR LOWER LANG NG 75 --}}
-                                                   @if(round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4) >= 75)
-                                                   <td>PASSED</td>
-                                                   @else
-                                                   <td>FAILED</td>
-                                                   @endif
-                                               @else
-                                                   <td></td>
-                                                   <td></td>
-                                               @endif
+                                                 @if(!empty($mygrade->frth_grade) & !empty($mygrade->frst_grade) & !empty($mygrade->scnd_grade) & !empty($mygrade->thrd_grade))
+                                                    @if($mygrade->frth_grade == "INC" | $mygrade->frst_grade == "INC" | $mygrade->thrd_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                    <td>INC</td>
+                                                    @elseif($mygrade->frth_grade == "NG" | $mygrade->frst_grade == "NG" | $mygrade->thrd_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                    <td>NG</td>
+                                                    @else
+                                                        @if(round(($mygrade->frst_grade + $mygrade->scnd_grade + $mygrade->thrd_grade + $mygrade->frth_grade) / 4) >= 75)
+                                                        <td>PASSED</td>
+                                                        @else
+                                                        <td>FAILED</td>
+                                                        @endif 
+                                                    @endif
+                                                {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
+                                                @else
+                                                    <td></td>
+                                                    <td></td>
+                                                @endif
                                            @else
                                                 {{-- IF SUBJECT IS FOR GRADE 11 OR 12 --}}
-                                               @if(!empty($mygrade->scnd_grade))
+                                               @if(!empty($mygrade->scnd_grade) & !empty($mygrade->frst_grade))
+                                                @if($mygrade->frst_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                <td>INC</td>
+                                                @elseif($mygrade->frst_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                <td>NG</td>
+                                                @else
                                                    <td>{{$average = round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) }}</td>
                                                    @php
                                                    $averages = $averages + $average;
                                                    $c++;
                                                   @endphp
-                                                    @if(round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) >= 75)
+                                                @endif
+                                                    {{-- @if(round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) >= 75)
                                                     <td>PASSED</td>
                                                     @else
                                                     <td>FAILED</td>
+                                                    @endif --}}
+                                                    @if(!empty($mygrade->frst_grade) & !empty($mygrade->scnd_grade))
+                                                    @if($mygrade->frst_grade == "INC" | $mygrade->scnd_grade == "INC")
+                                                    <td>INC</td>
+                                                    @elseif($mygrade->frst_grade == "NG" | $mygrade->scnd_grade == "NG")
+                                                    <td>NG</td>
+                                                    @else
+                                                        @if(round(($mygrade->frst_grade + $mygrade->scnd_grade) / 2) >= 75)
+                                                        <td>PASSED</td>
+                                                        @else
+                                                        <td>FAILED</td>
+                                                        @endif 
                                                     @endif
-                                                
+                                                {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
+                                                @else
+                                                    <td></td>
+                                                @endif
                                                @endif
                                                <td></td>
                                                <td></td>
@@ -272,16 +337,15 @@
                                        @endforeach
 
                                     </tbody>
-                                 
-                           
+                                           <p><small class="fw-bold">General Weighted Average:
+                                        @if($c == count($mygrades)) {{ number_format(($fave = $averages / $c), 2) }} @endif</small></p>
+                                    <input type="hidden" name="average" value={{$fave}}> 
+                                </table>
                                     {{-- <p><small class="fw-bold">General Weighted Average:@if ($c == count($mygrades)) {{ ($fave = $averages / $c) }} </small></p>
                                     <input type="hidden" name="average" value={{$fave}}>
                                     @endif --}}
-                                    <p><small class="fw-bold">General Weighted Average:
-                                        @if($c == count($mygrades)) {{ ($fave = $averages / $c) }} @endif</small></p>
-                                    <input type="hidden" name="average" value={{$fave}}>
-                                    {{-- <td>{{$c . $fave}}</td> --}}
-                                </table>
+                 
+                        
                                 {{-- @php
                                     echo($averages / $c)
                                     

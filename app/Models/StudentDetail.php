@@ -15,6 +15,7 @@ class StudentDetail extends Model
     protected $fillable = [
         'id',
         'lrn',
+        'track',
         'past_school',
         'past_school_address',
         'past_school_id',

@@ -2,7 +2,7 @@
 @section('title', 'Student List')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card spinnerTarget">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-user-graduate"></i> Students of @foreach($subject as $sub){{$sub->subject_name}}@endforeach</h3>
         </div>
@@ -14,7 +14,7 @@
               @endif
               
             <div class="table-responsive ">
-                <table class="table table-sm table-hover">
+                <table class="table table-sm table-borderless">
                 <thead class="table-primary">
                     <tr>
                         <th>LRN</th>
@@ -30,6 +30,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                    $averages = 0;
+                    $c = 0;
+                    $fave = 0;
+                    @endphp
                     @foreach ($students as $student)
                                 <tr>
                                     <form action="{{url('release-grades')}}" method="POST">
@@ -45,88 +50,70 @@
                                         <td>{{$student->thrd_grade}}</td>
                                         <td>{{$student->frth_grade}}</td>
 
-                                        @if (!empty($student->frth_grade))
-                                        <td>{{round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4)}}</td>
+                                        @if (!empty($student->frth_grade & $student->frst_grade & $student->thrd_grade & $student->scnd_grade))
+                                            @if($student->frth_grade == "INC" | $student->frst_grade == "INC" | $student->thrd_grade == "INC" | $student->scnd_grade == "INC")
+                                            <td>{{$status="INC"}}</td>
+                                            @elseif($student->frth_grade == "NG" | $student->frst_grade == "NG" | $student->thrd_grade == "NG" | $student->scnd_grade == "NG")
+                                            <td>{{$status="NG"}}</td>
+                                            @else
+                                            <td>{{round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4)}}</td>
+                                            @endif
                                         @else
                                         {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
-                                        <td></td>
+                                            <td></td>
                                         @endif
 
                                         @if(!empty($student->frth_grade) & !empty($student->frst_grade) & !empty($student->scnd_grade) & !empty($student->thrd_grade))
-                                        @if(round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4) >= 75)
-                                        <td>PASSED</td>
-                                        @else
-                                        <td>FAILED</td>
-                                        @endif
+                                            @if($student->frth_grade == "INC" | $student->frst_grade == "INC" | $student->thrd_grade == "INC" | $student->scnd_grade == "INC")
+                                            <td>{{$status}}</td>
+                                            @elseif($student->frth_grade == "NG" | $student->frst_grade == "NG" | $student->thrd_grade == "NG" | $student->scnd_grade == "NG")
+                                            <td>{{$status}}</td>
+                                            @else
+                                                @if(round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4) >= 75)
+                                                <td>PASSED</td>
+                                                @else
+                                                <td>FAILED</td>
+                                                @endif 
+                                            @endif
                                         {{-- KUNG WALA PANG FOURTH GRADE, TD MUNA --}}
                                         @else
                                             <td></td>
                                         @endif
                                     {{-- KUNG GRADE 11 OR 12 --}}
                                     @else
-                                        @if (!empty($student->scnd_grade))
-                                        <td>{{round(($student->frst_grade + $student->scnd_grade) / 2)}}</td>
+                                        @if(!empty($student->frst_grade) & !empty($student->scnd_grade))
+                                            @if($student->frst_grade == "INC" | $student->scnd_grade == "INC")
+                                            <td>INC</td>
+                                            @elseif($student->frst_grade == "NG" | $student->scnd_grade == "NG")
+                                            <td>NG</td>
+                                            @else
+                                            <td>{{$average = round(($student->frst_grade + $student->scnd_grade) / 2) }}</td>
+                                                @php
+                                                $averages = $averages + $average;
+                                                $c++;
+                                                @endphp
+                                            @endif
                                         @else
                                         {{-- KUNG WALA PANG SECOND GRADE, EDI TD MUNA --}}
                                         <td></td>
                                         @endif
                                         {{-- SINCE TWO TERMS LANG ANG SHS, PAG MAY SCND GRADE NA, CALCULATE STATUS --}}
                                         @if(!empty($student->frst_grade) & !empty($student->scnd_grade))
-                                            @if(round(($student->frst_grade + $student->scnd_grade ) / 2) >= 75)
-                                            <td>PASSED</td>
+                                            @if($student->frst_grade == "INC" | $student->scnd_grade == "INC")
+                                            <td>INC</td>
+                                            @elseif($student->frst_grade == "NG" | $student->scnd_grade == "NG")
+                                            <td>NG</td>
                                             @else
-                                            <td>FAILED</td>
+                                                @if(round(($student->frst_grade + $student->scnd_grade) / 2) >= 75)
+                                                <td>PASSED</td>
+                                                @else
+                                                <td>FAILED</td>
+                                                @endif 
                                             @endif
                                         @else
                                             <td></td>
                                         @endif
                                     @endif
-                                    
-                                    {{-- @foreach($frst as $f)
-                                        <td>{{$student->frst_grade}}</td>
-                                    @endforeach
-                                    @foreach($scnd as $sc)
-                                        <td>{{$student->scnd_grade}}</td>
-                                    @endforeach
-                                    @if($gradelvl->subject_grade_lvl != "Grade 11" && $gradelvl->subject_grade_lvl != "Grade 12")
-                                        @foreach($thrd as $th)
-                                            <td>{{$student->thrd_grade}}</td>
-                                        @endforeach
-                                        @foreach($frth as $fr)
-                                            <td>{{$student->frth_grade}}</td>
-                                        @endforeach
-                                        @if (!empty($student->frth_grade))
-                                        <td>{{round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4)}}</td>
-                                        @else
-                                        <td></td>
-                                        @endif
-                                        @if(!empty($student->frth_grade) & !empty($student->frst_grade) & !empty($student->scnd_grade) & !empty($student->thrd_grade))
-                                            @if(round(($student->frst_grade + $student->scnd_grade + $student->thrd_grade + $student->frth_grade) / 4) >= 75)
-                                            <td>PASSED</td>
-                                            @else
-                                            <td>FAILED</td>
-                                            @endif
-                                        @else
-                                            <td></td>
-                                        @endif
-                                    @else
-                                        @if (!empty($student->scnd_grade))
-                                        <td>{{round(($student->frst_grade + $student->scnd_grade) / 2)}}</td>
-                                        @else
-                                        <td></td>
-                                        @endif
-                                        @if(!empty($student->frst_grade) & !empty($student->scnd_grade))
-                                            @if(round(($student->frst_grade + $student->scnd_grade ) / 2) >= 75)
-                                            <td>PASSED</td>
-                                            @else
-                                            <td>FAILED</td>
-                                            @endif
-                                        @else
-                                            <td></td>
-                                        @endif
-                                    @endif
-                                </tr> --}}
-
                         @endforeach
           
               

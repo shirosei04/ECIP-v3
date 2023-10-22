@@ -53,7 +53,9 @@ class TeacherController extends Controller
         //             ->where('sect_id', $list->tsection_id)->groupby('stud_id')->get();
         $syears = SchoolYear::orderby('sy_id', 'desc')->get();
         $students = []; 
-        return view('teacher.class-list', compact('syears', 'students'));
+        $selectedYear = "";
+        $semester = "";
+        return view('teacher.class-list', compact('syears', 'students', 'selectedYear', 'semester'));
     }
 
     public function selectYear(Request $request){
@@ -75,7 +77,7 @@ class TeacherController extends Controller
             ->where('semester', $request->select_sem)
             ->where('sect_id', $slist->tsection_id)->groupby('stud_id')->get();
             $syears = SchoolYear::orderby('sy_id', 'desc')->get();
-            $selectedYear = $request->selected_year;
+            $selectedYear = $request->select_year;
             $semester = $request->select_sem;
             return view('teacher.class-list', compact('syears', 'students', 'selectedYear'))->withYear($selectedYear)->withList($list)->withSemester($semester);
         }else{
@@ -87,11 +89,11 @@ class TeacherController extends Controller
     public function handledSubjects(){
         $syears = SchoolYear::orderby('sy_id', 'desc')->get();
         $students = []; 
-        return view('teacher.handled-subjects', compact('syears', 'students'));
+        $syfilter = "";
+        return view('teacher.handled-subjects', compact('syears', 'students', 'syfilter'));
     }
 
     public function subjectsSelectYear(Request $request){
-        
         DB::statement("SET SQL_MODE=''");
         $syears = SchoolYear::orderby('sy_id', 'desc')->get();
         // $students = Grade::join('schedules', 'schedules.sched_id', '=', 'student_grades.schedule_id')
@@ -105,10 +107,11 @@ class TeacherController extends Controller
                     ->join('school_years', 'school_years.sy_id', '=', 'schedules.year_id')
                     ->join('subjects', 'subjects.subject_id', '=', 'schedules.sub_id')
                     ->where('schedules.year_id', $request->select_year)
-                    ->where('schedules.id', Auth::user()->id)->groupby('sub_id')->get();
+                    ->where('schedules.id', Auth::user()->id)->groupby('sub_id')->orderby('semester', 'desc')->get();
+        $syfilter = $request->select_year;
         // $students = Schedule::where('schedules.id', Auth::user()->id)->get();
         // ->where('id', Auth::user()->id)->get();
-        return view('teacher.handled-subjects', compact('syears', 'students'));
+        return view('teacher.handled-subjects', compact('syears', 'students', 'syfilter'));
     }
 
     public function viewSubjectStudents($id){
@@ -226,14 +229,14 @@ class TeacherController extends Controller
         ->join('subjects', 'subjects.subject_id', '=', 'schedules.sub_id')
         ->join('sections', 'sections.section_id', '=', 'schedules.sect_id') 
         ->where('stud_id', $studId)
-        ->where('year_id', $request->selectedYear)->groupby('subject_grade_lvl')->first();
+        ->where('year_id', $request->selectedYear)
+        ->where('semester', $request->semester)->groupby('subject_grade_lvl')->first();
         // dd($gradelvl);
-        $student = User::where('id', $studId)->get();
-        $mystud = User::where('id', $studId)->first();
-        $currentYear = SchoolYear::where('is_current', '1')->first();
-    
-        $selectedSy = SchoolYear::where('sy_id', $request->select_year)->get();   
-        return view('teacher.view-grades', compact('mygrades', 'selectedSy', 'studId', 'student', 'gradelvl')); 
+        $student = User::where('id', $studId)->first();
+        $semester = $request->semester;
+        $section = $request->section;
+        $selectedSy = SchoolYear::where('sy_id', $request->selectedYear)->first();   
+        return view('teacher.view-grades', compact('mygrades', 'selectedSy', 'studId', 'student', 'gradelvl', 'semester', 'section')); 
     }
 
     public function promoteStudent($id, $gl){

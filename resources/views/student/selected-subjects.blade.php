@@ -72,6 +72,7 @@
                             <input type="hidden" value="{{Auth::user()->id}}" name="stud_id">
                             <input type="hidden" value="{{$selectedSection}}" name="selected_section">
                             <input type="hidden" value="{{$value[0]->sched_id}}" name="inputs[]sched_id">
+                            <input type="hidden" value="{{$selectedTrack}}" name="track">
                             <td>{{$value[0]->schoolYear->school_year}}</td>
                             <td>{{$value[0]->section->section_name}}</td>
                             @if(!empty($value[0]->subject))

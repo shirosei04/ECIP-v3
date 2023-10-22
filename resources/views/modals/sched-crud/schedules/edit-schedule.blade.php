@@ -147,6 +147,7 @@
                                             <option value="{{$teacher->id}}">{{$teacher->first_name . " " . $teacher->middle_name . " " . $teacher->last_name . " " . $teacher->suffix}}</option>
                                             @endforeach
                                         @else
+                                            <option value="">No Assigned Teacher</option>
                                             @foreach ($teachers as $teacher)
                                             <option value="{{$teacher->id}}" {{ ($sched->teacher->id==$teacher->id)? "selected" : "" }}>{{$teacher->first_name . " " . $teacher->middle_name . " " . $teacher->last_name . " " . $teacher->suffix}} </option>
                                             @endforeach
@@ -185,13 +186,14 @@
                                     <select class="form-select" aria-label="Default select example" name="room_id"> 
                                         
                                     @if(is_null($sched->room))
-                                        <option value="" selected >No Assigned Room</option>
                                         {{-- if null --}}
+                                        <option value="" selected >No Assigned Room</option>
                                         @foreach ($rooms as $room)
                                         <option value="{{$room->room_id}}">{{$room->room_number}}</option>
                                         @endforeach
                                         
                                     @else
+                                        <option value="" selected >No Assigned Room</option>
                                         @foreach ($rooms as $room)
                                         <option value="{{$room->room_id}}" {{ ($sched->room->room_number==$room->room_number)? "selected" : "" }}>{{$room->room_number}}</option>
                                         @endforeach

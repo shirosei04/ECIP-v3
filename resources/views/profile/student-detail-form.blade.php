@@ -15,32 +15,6 @@
                         <form method="POST" action="{{url('addProfileDetail')}}" id="studentDetailForm">
                              @csrf
                             <h6>Student Information</h6>
-                           {{-- <div class="row">
-                                <input type="hidden" value="{{Auth::user()->id}} " name="inputs[0][user_id]">
-                                <div class="col-md-4">
-                                    <label class="form-label">LRN</label>
-                                    <input type="text" class="form-control" value="" name="inputs[0][lrn]" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Grade Level</label>
-                                    <input type="text" class="form-control" value="" name="inputs[0][grade_lvl]" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="" class="form-check-label">Do you have an available guardian for remote learning?</label>
-                                    <div class="row"> 
-                                        <div class="col-md-6">
-                                            <input class="form-check-input" type="radio" name="inputs[0][hgfrl]" id="inlineRadio4" value="1">
-                                            <label class="form-check-label" for="inlineRadio4">Yes</label>
-                                        </div>
-                                    </div>
-                                    <div class="row"> 
-                                        <div class="col-md-6">
-                                            <input class="form-check-input" type="radio" name="inputs[0][hgfrl]" id="inlineRadio4" value="0">
-                                            <label class="form-check-label" for="inlineRadio4">No</label>
-                                        </div>
-                                    </div>
-                                </div>
-                           </div> --}}
                            <div class="row">
                             <input type="hidden" value="{{Auth::user()->id}} " name="user_id">
                             <div class="col-md-4">
@@ -262,7 +236,7 @@
             
                                         <div class="col-md-3">
                                             <label for="" class="col-12 col-form-label text-start">{{ __('Contact Number') }}</label>
-                                            <input id="" type="number" class="form-control" name="inputs[0][contact_no]" value=""  >
+                                            <input id="" type="text" class="form-control" name="inputs[0][contact_no]" value="" maxLength="11">
                                         </div>
             
                                         <div class="col-md-3">

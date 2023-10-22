@@ -3,7 +3,7 @@
 
 @section('content')
 {{-- <div class="container-fluid"> --}}
-        <div class="card">
+        <div class="card vh-100">
             <div class="card-header tableCardHeader">
                 <form action="{{ url('searchSched') }}" type="get">
                     <div class="col-md-3 float-end">
@@ -26,7 +26,7 @@
                             <select class="form-select" aria-label="Default select example" name="sy_filter">
                                 <option value="" selected>Choose School Year</option>
                                 @foreach($allsy as $sy)
-                                <option value="{{$sy->school_year}}">{{$sy->school_year}}</option>
+                                <option value="{{$sy->school_year}}" {{ ($syfilter==$sy->school_year)? "selected" : "" }}>{{$sy->school_year}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -36,7 +36,7 @@
                             <select class="form-select" aria-label="Default select example" name="section_filter">
                                 <option value=""  selected>Filter Section</option>
                                 @foreach($sections as $section)
-                                <option value="{{$section->section_name}}">{{$section->section_name}}</option>
+                                <option value="{{$section->section_name}}"{{ ($sectionfilter==$section->section_name)? "selected" : "" }}>{{$section->section_name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -44,13 +44,13 @@
                         <div class="col-2">
                             <select class="form-select" name="track_filter">
                                 <option value="" selected>Filter by Track</option>
-                                <option value="ABM">ABM</option>
-                                <option value="GAS">GAS</option>
-                                <option value="HUMSS">HUMSS</option>
-                                <option value="STEM">STEM</option>
-                                <option value="TVL">TVL</option>
-                                <option value="General Subject(SHS)">General Subject(SHS)</option>
-                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="ABM" {{ ($trackfilter=="ABM")? "selected" : "" }}>ABM</option>
+                                <option value="GAS" {{ ($trackfilter=="GAS")? "selected" : "" }}>GAS</option>
+                                <option value="HUMSS" {{ ($trackfilter=="HUMSS")? "selected" : "" }}>HUMSS</option>
+                                <option value="STEM" {{ ($trackfilter=="STEM")? "selected" : "" }}>STEM</option>
+                                <option value="TVL" {{ ($trackfilter=="TVL")? "selected" : "" }}>TVL</option>
+                                <option value="General Subject(SHS)"{{ ($trackfilter=="General Subject(SHS)")? "selected" : "" }}>General Subject(SHS)</option>
+                                <option value="Not Applicable"{{ ($trackfilter=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                             </select>
                         </div>
 
@@ -58,9 +58,9 @@
                         <div class="col-2">
                             <select class="form-select" name="semester_filter">
                                 <option value="" selected>Filter by Semester</option>
-                                <option value="1st">1st</option>
-                                <option value="2nd">2nd</option>
-                                <option value="Not Applicable">Not Applicable</option>
+                                <option value="1st" {{ ($semesterfilter=="1st")? "selected" : "" }}>1st</option>
+                                <option value="2nd" {{ ($semesterfilter=="2nd")? "selected" : "" }}>2nd</option>
+                                <option value="Not Applicable"{{ ($trackfilter=="Not Applicable")? "selected" : "" }}>Not Applicable</option>
                             </select>
                         </div>
                         
@@ -103,7 +103,7 @@
                     <tbody>
                         @if (count($scheds) == 0)
                             <tr>
-                                <div class="alert alert-danger">NO SCHEDULES FOUND<strong style="color: red">"{{"S.Y: " . $syfilter . ", Section: " . $sectionfilter  . ", Track:" . $trackfilter . ", Semester:" . $semesterfilter}}"</strong></div>  </div>
+                                <div class="alert alert-danger">NO SCHEDULES FOUND<strong style="color: red"></strong></div>
                             </tr>
                         @else
            
@@ -111,9 +111,7 @@
                             @if(!empty($search_text))
                             <div class="alert alert-success" role="alert">Search result(s) for <strong style="color: red">"{{$search_text}}"</strong></div>
                             @endif
-                            @if($syfilter != "")
-                            <div class="alert alert-success" role="alert">Filter result(s) for <strong style="color: red">"{{"S.Y: " . $syfilter . ", Section: " . $sectionfilter  . ", Track:" . $trackfilter . ", Semester:" . $semesterfilter}}"</strong></div>
-                            @endif
+            
                             @foreach ($scheds as $sched)
                             <tr>
                             <input type="hidden" class="delete_val" name="id"  value="{{$sched->sched_id}}">

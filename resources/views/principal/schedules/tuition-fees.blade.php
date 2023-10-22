@@ -2,7 +2,7 @@
 @section('title', 'Tuition Fees')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-money-check-alt"></i> Student Fees</h3>
         </div>

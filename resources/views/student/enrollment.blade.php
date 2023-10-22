@@ -10,7 +10,7 @@
             </div>
             
         @else
-        @if ($ifOpenSy->enrollment == 0)
+        @if ($ifActiveSy->enrollment == "0")
         <div class="alert alert-danger" role="alert" >The principal has not opened the enrollment yet</div>
         @else
             @if(Auth::user()->student->enrollment_status == '0')
@@ -20,7 +20,7 @@
                         <select class="form-select" aria-label="Default select example" name="select_section" required>
                             <option value=""  selected>Select Section</option>
                             @foreach($sections as $section)
-                            <option value="{{$section->section_id}}" >{{$section->section_name}}</option>
+                            <option value="{{$section->section_id}}" {{ $selsection==$section->section_id ? "selected" : "" }}>{{$section->section_name}}</option>
                             @endforeach
                         </select>
                         <label for="" class="col-form-label text-start fw-bold" style="color: red">Step 1: Select a section</label>
@@ -28,17 +28,24 @@
                  
 
                     @if(Auth::user()->student->grade_lvl == '11' | Auth::user()->student->grade_lvl == '12')
-                    <div class="col-md-3">
-                        <select class="form-select" aria-label="Default select example" name="select_track" required>
-                            <option value=""  selected>Select Track</option>
-                            <option value="ABM" >ABM</option>
-                            <option value="STEM" >STEM</option>
-                            <option value="TVL" >TVL</option>
-                            <option value="HUMSS" >HUMSS</option>
-                            <option value="GAS" >GAS</option>
-                        </select>
-                        <label for="" class="col-form-label text-start fw-bold" style="color: red">Step 1.b: Select a track</label>
-                    </div>
+                        @if (!empty(Auth::user()->student->track))
+                            <div class="col-md-3">
+                                <input type="hidden" class="form-control" name="select_track"  value="{{ Auth::user()->student->track }}">
+                                <input type="text" class="form-control" value="{{ Auth::user()->student->track }}" disabled>
+                            </div>
+                        @else
+                        <div class="col-md-3">
+                            <select class="form-select" aria-label="Default select example" name="select_track" required>
+                                <option value=""  selected>Select Track</option>
+                                <option value="ABM" {{ ($track=="ABM")? "selected" : "" }}>ABM</option>
+                                <option value="STEM" {{ ($track=="STEM")? "selected" : "" }}>STEM</option>
+                                <option value="TVL" {{ ($track=="TVL")? "selected" : "" }}>TVL</option>
+                                <option value="HUMSS" {{ ($track=="HUMSS")? "selected" : "" }}>HUMSS</option>
+                                <option value="GAS" {{ ($track=="GAS")? "selected" : "" }}>GAS</option>
+                            </select>
+                            <label for="" class="col-form-label text-start fw-bold" style="color: red">Step 1.b: Select a track</label>
+                        </div>
+                        @endif
                     @endif
                     <div class="col-3">
                         <button type="submit"  class="btn btn-success"><i class="fas fa-filter"></i></button>
@@ -91,6 +98,7 @@
                                     <input type="hidden" value="{{$selectedSection}}" name="selected_section">
                                     <input type="hidden" value="{{Auth::user()->id}}" name="stud_id">
                                     <input type="hidden" value="{{$sched->section->section_id}}" name="section_id">
+                                    <input type="hidden" value="{{$track}}" name="track">
                                     <td><div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="{{$sched->sched_id}}" name="inputs[]selectedSub" id="selectedSubs" >
                             
@@ -122,26 +130,7 @@
                         </tbody>
                     </table>
                     <hr>
-                    {{-- <h3 class="text-center fw-bold">PLOTTED SCHEDULE VIEW</h3>
-                    <div id="calendar">
-                
-                    </div> --}}
-                    {{-- <div class="row">
-                        <div class="col-md-6">
-                            <label for="" class="col-6 col-form-label text-start fw-bold">Step 3: Select a payment type</label>
-                            <select class="form-select form-select-sm" aria-label="Default select example" name="role" required>
-                                <option value="" selected>Choose Payment Type</option>
-                                <option value="Staggered" selected>Staggered Payment</option>
-                                <option value="Full Payment" >Full Payment</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <button type="submit"  class="btn btn-success float-end btn-lg mt-3"><i class="fas fa-arrow-right"></i> Proceed to Next Step</button>
-                        </div>
-                    </div> --}}
                     <button type="submit" class="btn btn-success float-end btn-lg mt-3"><i class="fas fa-arrow-right"></i> Proceed to Next Step</button>
-                    
                 </div>
                 </form>
             @endif

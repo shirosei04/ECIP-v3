@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-    <div class="card feeCard">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
             <h3><i class="fas fa-calendar-alt"></i> All Subject Grades</h3>
         </div>
@@ -18,7 +18,7 @@
                     <div class="accordion-item">
                       <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse" aria-expanded="true" aria-controls="collapseOne">
-                            <strong> Grading Terms</strong>
+                            <strong> Grading Terms for Uploading of Grades</strong>
                         </button>
                       </h2>
                       <div id="collapse" class="accordion-collapse collapse show" data-bs-parent="#accordionExample1">
