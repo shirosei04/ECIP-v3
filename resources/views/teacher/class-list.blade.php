@@ -86,9 +86,14 @@
                                 <input type="hidden" class="delete_val" id="delete_val" name="selectedYear" value="{{$syear->sy_id}}">
                                 <input type="hidden" name="semester" value="{{$semester}}">
                                 <input type="hidden" name="section" value="{{$section}}">
+                                
                                 <td>{{ $student->lrn }}</td>
                                 <td>{{ $student->last_name . ", " . $student->first_name . " " . $student->middle_name . " " . $student->suffix  }}</td>
+                                @if($student->grade_lvl == 0)
+                                <td>Kinder</td>
+                                @else
                                 <td>{{ $student->grade_lvl }}</td>
+                                @endif
                                 <td> 
                                     <button type="submit" class="btn btn-info btn-sm"><span class="btn-label"><i class="fas fa-eye"></i> View Grades</span></button>
                                 </td>

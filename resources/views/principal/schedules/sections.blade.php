@@ -23,6 +23,9 @@
             @elseif (session('message'))
             <div class="alert alert-success" role="alert">{{ session('message') }}</div>
             @endif
+            @if($errors->has('section_name'))
+            <div class="alert alert-danger">{{ $errors->first('section_name') }}</div>
+            @endif
             <div class="table-responsive">
                 <table class="table table-bordered">
                 <thead class="table-primary">

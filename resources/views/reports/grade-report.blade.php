@@ -14,53 +14,108 @@
     {{-- Styles --}}
     <link href="{{public_path('css/bootstrap.min.css')}}" rel="stylesheet">
     <style>
-        body{
-            font-family: 'Sans-serif';
-        }
-  
-        th, td {
-            padding: 8px;
-            text-align: left;
-           
+       body {
+            font-family: 'Open Sans', sans-serif;
+            /* background-color: #f2f2f2; */
+            margin: 0;
         }
 
-        thead{
-            background-color: rgb(131, 166, 219);
-        }
-
-        .logo{
-            margin-left: auto;
-            margin-right: auto;
+        .logo {
             text-align: center;
-            margin-top: -20px;
+            margin: 0;
+
+        }
+
+        .logo img {
+            width: 100px;
+        }
+
+        .school-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            color: #4784e8;
+        }
+
+        .school-address {
+        }
+
+        .header {
+            background-color: #4784e8;
+            padding: 10px;
+            text-align: center;
+        }
+
+        h5 {
+            text-align: center;
+            margin: 10px;
+        }
+
+        .user-info {
+            text-align: center;
+        }
+
+        .user-info h6 {
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .table {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .table th,
+        .table td {
+            padding: 10px;
+        }
+
+        .table th {
+            background-color: #4784e8;
+            color: #fff;
+        }
+
+        .table td {
+            background-color: #f9f9f9;
+        }
+
+        .m-3 {
+            margin: 20px;
+            text-align: center;
         }
 
     </style>
 </head>
 <body>
-    <div class="logo" style="margin: 0"></span>
+    {{-- <div class="logo" style="margin: 0"></span>
     <span style="font-size: 40px;  " class="fw-bold"><img style="width: 100px; " class="ms-auto me-auto" src="{{ public_path('img/logo4.png') }}" alt="">
     Educare College Inc.</span>
     <p style="margin: 0 0 3px 0">Irisan, Baguio City</p>
+    </div> --}}
+    <div class="logo">
+        <img src="{{ public_path('img/logo4.png') }}" alt="Educare College Inc. Logo">
+        <p class="school-name">Educare College Inc.</p>
+        <p class="school-address">Irisan, Baguio City, Philippines, 2600</p>
     </div>
-    <div style="background-color: blue"></div>
+    <div style="background-color: rgb(150, 150, 155)"></div>
     @if (Auth::user()->role == "Student")
-    Student Name: {{Auth::user()->last_name . ", " . Auth::user()->first_name . " " . Auth::user()->middle_name . " " . Auth::user()->suffix}}
-    
+   <b> Student Name: </b> {{Auth::user()->last_name . ", " . Auth::user()->first_name . " " . Auth::user()->middle_name . " " . Auth::user()->suffix}}<br>
     @else
-    Student Name: {{$gradelvl->last_name . ", " . $gradelvl->first_name . " " . $gradelvl->middle_name . " " . $gradelvl->suffix}}
+    <b>Student Name: </b> {{$gradelvl->last_name . ", " . $gradelvl->first_name . " " . $gradelvl->middle_name . " " . $gradelvl->suffix}}<br>
  
     @endif
-    <h6>General Average: {{$average}}</h6>
-    <h6>{{$gradelvl->school_year}}</h6>
+    <b>School Year: </b>{{$gradelvl->school_year}}<br>
+    <b>General Average: </b>{{$average}}<br>
+   
 
-    <div style="background-color: blue"></div>
+    <div style="background-color: rgb(188, 188, 188)"></div>
 
     <div class="card-body" style="margin-top: 15px;">
         <table class="table">
             <thead class="table-primary">
                 <tr>
-                    <td>Section</td>
+                    <th>Section</th>
                     <th width="50%">Subject</th>
                     <th>1st</th>
                     <th>2nd</th>

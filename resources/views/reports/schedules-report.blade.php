@@ -94,11 +94,12 @@
         <p class="school-name">Educare College Inc.</p>
         <p class="school-address">Irisan, Baguio City, Philippines, 2600</p>
     </div>
-    <div style="background-color: rgb(150, 150, 155)"></div>
+    
     <b>School Year: </b>{{ $year }} <br>
+
     @if(Auth::user()->role != "Principal" )
     @if(Auth::user()->role == "Teacher" )
-    <b>Teacher Name: </b> {{Auth::user()->last_name . ", " . Auth::user()->first_name . " " . Auth::user()->middle_name . " " . Auth::user()->suffix}}
+    Teacher Name: {{Auth::user()->last_name . ", " . Auth::user()->first_name . " " . Auth::user()->middle_name . " " . Auth::user()->suffix}}
     @else
     <b> Student Name: </b> {{Auth::user()->last_name . ", " . Auth::user()->first_name . " " . Auth::user()->middle_name . " " . Auth::user()->suffix}} <br>
     <b>Grade Level: </b>{{$glvl}} <br>
@@ -109,26 +110,18 @@
     <b>Section: </b>{{$section}}
     @endif
     <!-- <div style="background-color: blue"></div> -->
-    @if (Auth::user()->role == "Student")
     <div class=" text-uppercase text-center"><b>Student Enrolled Subjects</b></div>
-    @else
-    <div class=" text-uppercase text-center"><b>Subjects Handled FOR THE CURRENT YEAR</b></div>
-    @endif
-   
 
     <div class="card-body" style="margin-top: 15px;">
         <table class="table">
             <thead class="table-primary">
                 <tr>
-                    <th>Section</th>
                     <th>Subject Name</th>
+                    <th>Section</th>
                     <th>Days</th>
                     <th>Time Start</th>
                     <th>Time End</th>
-                    @if (Auth::user()->role == "Student")
                     <th>Teacher</th>
-                    @endif
-                
                     <th>Room</th>
                 </tr>
             </thead>
@@ -140,12 +133,10 @@
                     <td>{{$sched->days}}</td>
                     <td>{{$sched->time_start}}</td>
                     <td>{{$sched->time_end}}</td>
-                    @if (Auth::user()->role == "Student")
-                        @if(!empty($sched->teacher))
-                        <td>{{$sched->teacher->first_name . " " . $sched->teacher->middle_name . " " . $sched->teacher->last_name . " " . $sched->teacher->suffix}}</td>
-                        @else
-                        <td>No Assigned Teacher</td>
-                        @endif
+                    @if(!empty($sched->teacher))
+                    <td>{{$sched->teacher->first_name . " " . $sched->teacher->middle_name . " " . $sched->teacher->last_name . " " . $sched->teacher->suffix}}</td>
+                    @else
+                    <td>No Assigned Teacher</td>
                     @endif
                     @if(!empty($sched->room))
                     <td>{{$sched->room->room_number}}</td>

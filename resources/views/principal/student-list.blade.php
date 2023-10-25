@@ -82,7 +82,12 @@
                                     <td>{{ $user->student->lrn }}</td>
                                     <td>{{ $user->last_name }}</td>
                                     <td>{{ $user->first_name }}</td>
+                                    @if ($user->student->grade_lvl == "0")
+                                    <td>Kinder</td>
+                                    @else
                                     <td>{{ $user->student->grade_lvl }}</td>
+                                    @endif
+                            
                                     <td> 
                                         <a type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewUserModal{{$user->id}}"><span class="btn-label"><i class="fas fa-eye"></i> View</span></a>
                                         <a type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal{{$user->id}}"><span class="btn-label"><i class="fas fa-edit"></i> Edit</span></a>
@@ -156,7 +161,7 @@
             // alert(delete_id);
                 swal({
                 title: "Are you sure?",
-                text: "Once archived, you cannot undo it",
+                text: "You are about to archive this user.",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,

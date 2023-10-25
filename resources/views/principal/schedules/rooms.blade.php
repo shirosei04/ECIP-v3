@@ -16,12 +16,15 @@
             <a data-bs-toggle="modal" data-bs-target="#addRoomModal" class="btn btn-success float-start">Add Room</a>
             @include('modals.sched-crud.rooms.add-room')
         </div>
-
+        
         <div class="card-body">
             @if (session('alert'))
             <div class="alert alert-danger" role="alert">{{ session('alert') }}</div>
             @elseif (session('message'))
             <div class="alert alert-success" role="alert">{{ session('message') }}</div>
+            @endif
+            @if($errors->has('room_number'))
+            <div class="alert alert-danger">{{ $errors->first('room_number') }}</div>
             @endif
             <div class="table-responsive">
                 <table class="table table-bordered">

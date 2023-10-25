@@ -340,22 +340,29 @@ class AdmissionController extends Controller
     }
 
     public function transferSection(Request $request){
+        $request->validate([
+            'section_id' => 'required',
+        ]);
         //find current sy
         $currentYear = SchoolYear::where('is_current', '1')->first();
        //find and remove all current schedules of selected student
-       $studGrades = Grade::join('schedules', 'schedules.sched_id', '=', 'student_grades.schedule_id')
+        $studGrades = Grade::join('schedules', 'schedules.sched_id', '=', 'student_grades.schedule_id')
                             ->join('school_years', 'school_years.sy_id', '=', 'schedules.year_id')
-                            ->where('year_id', $currentYear->sy_id);
+                            ->where('year_id', $currentYear->sy_id)
+                            ->where('stud_id', $request->student_id)
+                            ->where('frst_grade', null);
+                            // ->where('scnd_grade', '=', '')
+                            // ->where('thrd_grade', '=', '')
+                            // ->where('frth_grade', '=', '');
         $studGrades->delete();
         //enroll all subjects of selected section
-        $scheds = Schedule::where('sect_id', $request->section_id)->get();
+        $scheds = Schedule::where('sect_id', $request->section_id)->where('year_id', $currentYear->sy_id)->get();
         foreach($scheds as $sched){
             Grade::create([
                 'stud_id' => $request->student_id,
                 'schedule_id' => $sched->sched_id,
             ]);
         }
-
 
     }
 

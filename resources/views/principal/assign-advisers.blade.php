@@ -2,16 +2,8 @@
 @section('title', 'Class Advisers')
 @section('content')
 {{-- <div class="container-fluid"> --}}
-    <div class="card">
+    <div class="card vh-100">
         <div class="card-header tableCardHeader">
-            <form action="{{ url('searchSection') }}" type="get">
-                <div class="col-md-3 float-end">
-                    <input type="search" class="form-control" placeholder="Search Section or Grade Level" name="query">
-                </div> 
-                <div class="float-end">
-                    <a type="button" href="{{url('/sections')}}"  class="btn btn-primary"><i class="fas fa-sync-alt"></i></a>
-                </div>
-            </form>
             <h3><i class="fas fa-warehouse"></i> Class Advisers</h3>
             <a data-bs-toggle="modal" data-bs-target="#addAdviserModal" class="btn btn-success float-start">Assign Class Adviser</a>
             @include('modals.sched-crud.advisers.add-adviser')

@@ -379,7 +379,11 @@
                                     <tr>
                                         <td class="mt-0 mb-0">{{$award->award_name}}</td>
                                         <td class="mt-0 mb-0">{{$award->award_desc}}</td>
+                                        @if ($award->grade_lvl == 0)
+                                        <td class="mt-0 mb-0">Kinder</td>
+                                        @else
                                         <td class="mt-0 mb-0">Grade {{$award->grade_lvl}}</td>
+                                        @endif
                                         <td class="mt-0 mb-0">{{date('F d, Y', strtotime($award->date_awarded))}}</td>
                                     </tr>
                                     @endforeach

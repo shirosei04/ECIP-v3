@@ -1,2 +1,1 @@
-<img src="{{url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQKVYaLLAbl0VLL978dEG8-hVOlnvM-zkRjzUVylTYUA&s')}}" alt="bruh">
 Greetings! The password for your account in Educare College Inc. Portal has been reset to default password. Please remember to change it afterwards. If you think this is a mistake, please contact the school via email: (sadacjas101@gmail.com) / tel no: 074-165478 or you can also report to the Principal's Office directly. 

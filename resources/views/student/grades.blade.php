@@ -379,7 +379,7 @@
             var delete_id = $(this).closest("tr").find('.delete_val').val();
             // alert(delete_id);
             var id = document.getElementById("student_id").value;
-            alert(delete_id);
+            // alert(delete_id);
                 swal({
                 title: "Are you sure?",
                 text: "Once deleted, you cannot undo it",
@@ -418,7 +418,6 @@
         $('.transferBtn').click(function (e) {
             e.preventDefault();
             // alert(delete_id);
-
             var data = $('#transferForm').serialize();
             // alert(data);
                 swal({
@@ -439,9 +438,17 @@
                                     icon: "success",
                                 })
                                 .then((result) => {
-                                    location.href();
+                                    location.reload();
                                 });
                             },
+                            error: function (reject) {
+                                swal('No section was selected. Please Try Again' , {
+                                    icon: "error",
+                                }) 
+                                .then((result) => {
+                                    location.reload();
+                                });
+                            }
                         });
                     } else {
                         swal("No Changes Made :)");

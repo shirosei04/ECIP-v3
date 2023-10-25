@@ -109,7 +109,7 @@ class RegistrationFormRequest extends FormRequest
 
  public function messages(){
      return [
-        'password.confirmed' => ['Password must match'],
+      //   'password.confirmed' => ['Password must match.'],
         'tel_no.numeric' => ['The telephone number must be a number.'],
         'cell_no.numeric' => ['The cellphone number must be a number.'],
          'bplace.required' => ['The birth place field is required.'],

@@ -51,7 +51,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-success"><span class="btn-label"><i class="fas fa-save"></i></span> Save</button>
+            <button type="submit" class="btn btn-success"><span class="btn-label"><i class="fas fa-save"></i></span> Assign</button>
         </div>
         </div>
       </div>

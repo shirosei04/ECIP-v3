@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Archived Users')
 @section('content')
-<div class="card">
+<div class="card vh-100">
     <div class="loader fs-1 text-white fw-bold">
         ECIP
     </div>

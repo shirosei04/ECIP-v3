@@ -21,7 +21,7 @@
                             </div>
                             <div class="mb-3">
                               <label for="exampleFormControlInput1" class="form-label">Subject</label>
-                              <input type="text" class="form-control" value="Educare College Inc. Registry Verification">
+                              <input type="text" class="form-control" value="Educare College Inc. Registry Verification" disabled>
                             </div>
                             <div class="mb-3">
                               <label for="exampleFormControlTextarea1" class="form-label">Message</label>

@@ -23,7 +23,9 @@
                                 </div>
                             @endif
                         <p>Please login to your account</p>
-        
+                        @if (session('alert'))
+                        <div class="alert alert-danger" role="alert">{{ session('alert') }}</div>
+                         @endif
                         <div class="form-outline mb-4">
                             <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus>
                             <label class="form-label">Username</label>

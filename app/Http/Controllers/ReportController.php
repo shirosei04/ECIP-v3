@@ -96,13 +96,14 @@ class ReportController extends Controller
         DB::statement("SET SQL_MODE=''");
         //find the curent year
         $students = [];
+        $adviser = User::where('id', $request->adviser)->first();
         //find out what classes are assigned to logged in teacher
         foreach($request->id as $key => $value){
             $student = User::where('id', $value )->first();
             array_push($students, $student);
         }
 
-        $pdf = Pdf::loadView('reports.class-report', compact('students'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('reports.class-report', compact('students', 'adviser'))->setPaper('a4', 'portrait');
         //  $pdf->set_base_path("public/css/bootstrap.min.css");
         return $pdf->stream();
     }

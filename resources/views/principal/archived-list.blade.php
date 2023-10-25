@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Archived Users')
 @section('content')
-<div class="card">
+<div class="card vh-100">
     <div class="loader fs-1 text-white fw-bold">
       
     </div>
@@ -83,6 +83,7 @@
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Applying As</th>
+                <th>Verified</th>
                 <th>Details</th>
               </tr>
             </thead>
@@ -165,7 +166,14 @@
                                     @else
                                         <td>No Grade Level retrieved</td>
                                     @endif
+                                    @if ($user->is_verified == "1")
+                                    <td>Yes</td>
+                                    @else
+                                    <td>No</td>
+                                    @endif
+                           
                                     <td> 
+                                   
                                     <a href="{{url('/view-archived/'.$user->id)}}"  type="button" class="btn btn-info"><span class="btn-label"><i class="far fa-eye"></i></span> View</a>
                                     </td>
                                 </tr>

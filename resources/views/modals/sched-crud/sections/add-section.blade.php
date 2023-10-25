@@ -38,9 +38,6 @@
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Section Name</label>
                                     <input type="float" class="form-control" name="section_name" required> 
-                                    @if($errors->has('section_name'))
-                                    <span class="text-danger">{{ $errors->first('section_name') }}</span>
-                                    @endif
                                 </div>
 
                                 <div class="col-md-4 mb-3">

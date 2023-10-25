@@ -64,6 +64,7 @@
                  @foreach ($students as $student)
                             <tr>
                                 <input type="hidden" name="id[]" value="{{$student->id}}">
+                                <input type="hidden" name="adviser" value="{{$adviser->id}}">
                                 <td>{{$c}}</td>
                                 <td>{{ $student->lrn }}</td>
                                 <td>{{ $student->last_name . ", " . $student->first_name . " " . $student->middle_name . " " . $student->suffix}}</td>

@@ -7,7 +7,7 @@
         <form action="{{ url('subject-select-year') }}">
             <div class="row p-3" >
                 <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select example" name="select_year">
+                    <select class="form-select" aria-label="Default select example" name="select_year" required>
                         <option value=""  selected>Select School Year</option>
                         @foreach($syears as $year)
                         <option value="{{$year->sy_id}}" {{ ($syfilter==$year->sy_id)? "selected" : "" }}>{{$year->school_year}}</option>

@@ -595,7 +595,11 @@ class PrincipalController extends Controller
     public function setCurrentSy($sy_id){
         //set all the other years as not current
         SchoolYear::where('is_current', '=', '1')->update(['is_current' => 0]);
-
+        //find if the enrollment is open
+        SchoolYear::where('enrollment', '=', '1')->update(['enrollment' => 0]);
+        // if(count($open) > 0){
+        //     return redirect('school-year')->with('alert', 'Please close the current enrollment first!');
+        // } 
         //set selected year as current
         $year = SchoolYear::find($sy_id);
         $year->is_current = '1';
@@ -628,11 +632,12 @@ class PrincipalController extends Controller
        if($search_text == null){
         return redirect('/school-year');
        }else{
+        $semesters = Semester::all();
         $years = SchoolYear::where('school_year', 'LIKE', '%'.$search_text.'%')->paginate(12)->withQueryString();
             if(count($years) == 0){
                 return redirect('/school-year')->with('alert', 'No results found for "'.$search_text.'" ');
             }else{
-                return view('principal.schedules.school-years', compact('years', 'search_text'));
+                return view('principal.schedules.school-years', compact('years', 'search_text', 'semesters'));
             }
         }
     }
